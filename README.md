@@ -1,6 +1,6 @@
 # NeuralCanvas
 
-[![CI](https://img.shields.io/badge/CI-pending-lightgrey)](#)
+[![CI](https://github.com/SHREY-FR4NKL1NNN/neuralcanvas/actions/workflows/ci.yml/badge.svg)](https://github.com/SHREY-FR4NKL1NNN/neuralcanvas/actions/workflows/ci.yml)
 
 **A real-time neural network training observatory with a memory layer.** Define
 an architecture, train it on the GPU, and watch every internal detail stream live
@@ -55,6 +55,33 @@ Open **http://localhost:5174**. The frontend talks to the backend at
    flash in the Memory panel; the influence shows up in the loss/activation views.
 5. **Compare** — toggle the embedding backend (sentence-transformers ↔ Ollama),
    change the architecture, and watch how training behaviour changes.
+
+## Deployment
+
+The frontend is a static SPA (deployable to Vercel); the backend runs locally
+against the GPU and is exposed publicly via an ngrok **static domain**. The
+frontend reads its backend URL from `VITE_API_URL` (see `frontend/.env.example`),
+falling back to `http://localhost:8001` for local dev. CORS already allows
+`*.vercel.app` and `*.ngrok-free.{app,dev}`, and the `ngrok-skip-browser-warning`
+header is sent on every request (and echoed by the backend middleware).
+
+### Frontend (Vercel)
+
+1. Fork the repo.
+2. Import it to Vercel and set the **root directory** to `frontend` (the repo
+   root *is* `neuralcanvas`, so the frontend lives at `frontend/`).
+3. Add an environment variable `VITE_API_URL=<your ngrok static domain>`.
+4. Deploy. (`frontend/vercel.json` sets the build command, `dist` output, and the
+   SPA rewrite.)
+
+### Backend (local GPU + ngrok)
+
+1. Start the backend: `cd backend && uvicorn main:app --port 8001`.
+2. Reserve a **static domain** in the ngrok dashboard (one free static domain per
+   account).
+3. Expose port 8001: `ngrok http 8001 --url=https://<your-domain>.ngrok-free.dev`.
+4. Put that URL in `VITE_API_URL` (Vercel env, or `frontend/.env.production`) and
+   redeploy.
 
 ## Endpoints
 

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feature/*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies (CPU torch + light deps)
+        run: |
+          cd backend
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install fastapi httpx numpy scikit-learn pydantic python-dotenv python-multipart
+          pip install pytest pytest-asyncio ruff
+      - name: Run tests
+        run: |
+          cd backend
+          pytest tests/ -v --tb=short
+      - name: Lint check
+        run: |
+          cd backend
+          ruff check . --ignore E501
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
