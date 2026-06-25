@@ -8,7 +8,7 @@ to the browser — weight heatmaps, gradient norms, activation histograms, loss
 curves, and an animated network diagram. Add text memories and watch their
 retrieved context shift what the network learns.
 
-🔗 **Live demo:** _(deploy URL placeholder)_ · 📐 **[ARCHITECTURE.md](ARCHITECTURE.md)**
+🔗 **[Live demo → neuralcanvas-opal.vercel.app](https://neuralcanvas-opal.vercel.app)** · 📐 **[ARCHITECTURE.md](ARCHITECTURE.md)**
 
 ## Highlights
 
